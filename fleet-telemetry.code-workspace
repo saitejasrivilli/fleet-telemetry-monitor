@@ -1,0 +1,57 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "go.useLanguageServer": true,
+        "go.lintTool": "golangci-lint",
+        "go.lintFlags": ["--fast"],
+        "go.formatTool": "goimports",
+        "go.testFlags": ["-v"],
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "files.associations": {
+            "*.h": "cpp",
+            "*.cpp": "cpp"
+        },
+        "C_Cpp.default.cppStandard": "c++17",
+        "C_Cpp.default.compilerPath": "/usr/bin/g++",
+        "C_Cpp.clang_format_fallbackStyle": "Google",
+        "python.defaultInterpreterPath": "python3",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "terminal.integrated.cwd": "${workspaceFolder}",
+        "files.exclude": {
+            "**/*.o": true,
+            "**/*.db": true,
+            "**/node_modules": true
+        },
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/vendor": true,
+            "**/*.db": true
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "golang.go",
+            "ms-vscode.cpptools",
+            "ms-python.python",
+            "mtxr.sqltools",
+            "mtxr.sqltools-driver-sqlite",
+            "humao.rest-client",
+            "ms-azuretools.vscode-docker",
+            "github.vscode-github-actions",
+            "eamodio.gitlens",
+            "streetsidesoftware.code-spell-checker"
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": []
+    }
+}

@@ -1,0 +1,166 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Go CLI",
+            "type": "shell",
+            "command": "go",
+            "args": ["build", "-o", "fleet-monitor", "./cmd/"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$go"],
+            "detail": "Build the Go CLI application"
+        },
+        {
+            "label": "Build C++ Parser",
+            "type": "shell",
+            "command": "make",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/cpp-parser"
+            },
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Build the high-performance C++ parser"
+        },
+        {
+            "label": "Build C++ Parser (Debug)",
+            "type": "shell",
+            "command": "make",
+            "args": ["debug"],
+            "options": {
+                "cwd": "${workspaceFolder}/cpp-parser"
+            },
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Build C++ parser with debug symbols"
+        },
+        {
+            "label": "Build All",
+            "dependsOn": ["Build Go CLI", "Build C++ Parser"],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Build both Go and C++ components"
+        },
+        {
+            "label": "Run Go Tests",
+            "type": "shell",
+            "command": "go",
+            "args": ["test", "-v", "./..."],
+            "group": "test",
+            "problemMatcher": ["$go"],
+            "detail": "Run all Go tests"
+        },
+        {
+            "label": "Run Go Tests with Coverage",
+            "type": "shell",
+            "command": "go",
+            "args": ["test", "-v", "-coverprofile=coverage.out", "./..."],
+            "group": "test",
+            "problemMatcher": ["$go"],
+            "detail": "Run tests with coverage report"
+        },
+        {
+            "label": "Start Server",
+            "type": "shell",
+            "command": "./fleet-monitor",
+            "args": ["server", "--port", "8080"],
+            "dependsOn": "Build Go CLI",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^.*$",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^.*Starting.*$",
+                    "endsPattern": "^.*Listening.*$"
+                }
+            },
+            "detail": "Start the REST API server on port 8080"
+        },
+        {
+            "label": "Generate Sample Data",
+            "type": "shell",
+            "command": "./fleet-monitor",
+            "args": ["generate", "-c", "10000", "-n", "10"],
+            "dependsOn": "Build Go CLI",
+            "problemMatcher": [],
+            "detail": "Generate 10,000 sample telemetry records"
+        },
+        {
+            "label": "Generate Large Dataset",
+            "type": "shell",
+            "command": "python3",
+            "args": ["scripts/generate_data.py", "-n", "100000", "-v", "20", "-f", "csv", "-o", "data/large"],
+            "problemMatcher": [],
+            "detail": "Generate 100K records for benchmarking"
+        },
+        {
+            "label": "Benchmark C++ Parser",
+            "type": "shell",
+            "command": "./fleet_parser",
+            "args": ["-B", "5", "../data/large.csv"],
+            "options": {
+                "cwd": "${workspaceFolder}/cpp-parser"
+            },
+            "dependsOn": ["Build C++ Parser", "Generate Large Dataset"],
+            "problemMatcher": [],
+            "detail": "Run parser benchmark"
+        },
+        {
+            "label": "Docker Build",
+            "type": "shell",
+            "command": "docker",
+            "args": ["build", "-t", "fleet-telemetry-monitor", "."],
+            "problemMatcher": [],
+            "detail": "Build Docker image"
+        },
+        {
+            "label": "Docker Run",
+            "type": "shell",
+            "command": "docker",
+            "args": ["run", "-p", "8080:8080", "--rm", "fleet-telemetry-monitor"],
+            "dependsOn": "Docker Build",
+            "problemMatcher": [],
+            "detail": "Run Docker container"
+        },
+        {
+            "label": "Docker Compose Up",
+            "type": "shell",
+            "command": "docker-compose",
+            "args": ["up", "-d"],
+            "problemMatcher": [],
+            "detail": "Start all services with Docker Compose"
+        },
+        {
+            "label": "Lint Go Code",
+            "type": "shell",
+            "command": "golangci-lint",
+            "args": ["run", "--fast"],
+            "problemMatcher": ["$go"],
+            "detail": "Run Go linter"
+        },
+        {
+            "label": "Format Go Code",
+            "type": "shell",
+            "command": "go",
+            "args": ["fmt", "./..."],
+            "problemMatcher": [],
+            "detail": "Format all Go files"
+        },
+        {
+            "label": "Clean All",
+            "type": "shell",
+            "command": "bash",
+            "args": ["-c", "rm -f fleet-monitor *.db coverage.out && cd cpp-parser && make clean"],
+            "problemMatcher": [],
+            "detail": "Clean all build artifacts"
+        }
+    ]
+}

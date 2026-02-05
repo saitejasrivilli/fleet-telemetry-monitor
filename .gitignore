@@ -1,0 +1,92 @@
+# =============================================================================
+# Fleet Telemetry Monitor - Git Ignore
+# =============================================================================
+
+# Binaries
+fleet-monitor
+fleet-monitor.exe
+cpp-parser/fleet_parser
+cpp-parser/fleet_parser.exe
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Object files
+*.o
+*.obj
+
+# Build directories
+/build/
+/dist/
+/out/
+
+# Go
+/vendor/
+go.sum
+
+# Database files
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Generated data (keep samples)
+data/large*.csv
+data/test*.csv
+data/benchmark*.csv
+data/*.json
+!data/sample_telemetry.csv
+
+# Coverage
+coverage.out
+coverage.html
+*.coverprofile
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+*.env
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Docker
+.docker/
+
+# Node (if dashboard expands)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.egg-info/
+.eggs/
+venv/
+.venv/
+
+# Test artifacts
+test-results/
+junit.xml
+
+# Binary format files
+*.fbin

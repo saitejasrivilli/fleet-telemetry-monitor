@@ -1,0 +1,157 @@
+# Fleet Telemetry Monitor - API Test Requests
+# Use with VS Code REST Client extension (humao.rest-client)
+
+@baseUrl = http://localhost:8080
+
+### ========================
+### Health & Status
+### ========================
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Database Statistics
+GET {{baseUrl}}/api/v1/stats
+
+### ========================
+### Vehicles
+### ========================
+
+### List All Vehicles
+GET {{baseUrl}}/api/v1/vehicles
+
+### Create Vehicle
+POST {{baseUrl}}/api/v1/vehicles
+Content-Type: application/json
+
+{
+    "id": "VEH-001",
+    "name": "Delivery Truck 1",
+    "license_plate": "FL-1234",
+    "vehicle_type": "Truck"
+}
+
+### Create Another Vehicle
+POST {{baseUrl}}/api/v1/vehicles
+Content-Type: application/json
+
+{
+    "id": "VEH-002",
+    "name": "Service Van 1",
+    "license_plate": "FL-5678",
+    "vehicle_type": "Van"
+}
+
+### Get Vehicle by ID
+GET {{baseUrl}}/api/v1/vehicles/VEH-001
+
+### ========================
+### Telemetry Data
+### ========================
+
+### Query All Telemetry (with pagination)
+GET {{baseUrl}}/api/v1/telemetry?limit=50&offset=0
+
+### Query by Vehicle
+GET {{baseUrl}}/api/v1/telemetry?vehicle_id=VEH-001&limit=100
+
+### Query with Time Range
+GET {{baseUrl}}/api/v1/telemetry
+    ?vehicle_id=VEH-001
+    &start_time=2024-01-15T00:00:00Z
+    &end_time=2024-01-16T00:00:00Z
+    &limit=100
+
+### Query by Speed Range
+GET {{baseUrl}}/api/v1/telemetry?min_speed=50&max_speed=100&limit=50
+
+### Insert Single Telemetry Record
+POST {{baseUrl}}/api/v1/telemetry
+Content-Type: application/json
+
+{
+    "vehicle_id": "VEH-001",
+    "latitude": 28.5383,
+    "longitude": -81.3792,
+    "speed": 65.5,
+    "heading": 180.0,
+    "engine_rpm": 2800,
+    "fuel_level": 72.5,
+    "odometer_km": 52341.2,
+    "engine_temp": 85.2,
+    "battery_volt": 12.8
+}
+
+### Batch Insert Telemetry
+POST {{baseUrl}}/api/v1/telemetry/batch
+Content-Type: application/json
+
+[
+    {
+        "vehicle_id": "VEH-001",
+        "latitude": 28.5390,
+        "longitude": -81.3785,
+        "speed": 70.2,
+        "heading": 175.0,
+        "engine_rpm": 3000,
+        "fuel_level": 72.0,
+        "odometer_km": 52342.5,
+        "engine_temp": 86.1,
+        "battery_volt": 12.7
+    },
+    {
+        "vehicle_id": "VEH-001",
+        "latitude": 28.5400,
+        "longitude": -81.3775,
+        "speed": 72.8,
+        "heading": 172.0,
+        "engine_rpm": 3100,
+        "fuel_level": 71.8,
+        "odometer_km": 52343.8,
+        "engine_temp": 86.5,
+        "battery_volt": 12.7
+    },
+    {
+        "vehicle_id": "VEH-002",
+        "latitude": 28.5550,
+        "longitude": -81.3920,
+        "speed": 45.5,
+        "heading": 90.0,
+        "engine_rpm": 2200,
+        "fuel_level": 85.2,
+        "odometer_km": 78234.1,
+        "engine_temp": 82.3,
+        "battery_volt": 13.1,
+        "diagnostic_code": "P0420"
+    }
+]
+
+### Get Latest Telemetry for Vehicle
+GET {{baseUrl}}/api/v1/telemetry/latest/VEH-001
+
+### Get Vehicle Telemetry Summary
+GET {{baseUrl}}/api/v1/telemetry/summary/VEH-001
+
+### ========================
+### Diagnostics
+### ========================
+
+### Get All Diagnostic Alerts
+GET {{baseUrl}}/api/v1/diagnostics?limit=50
+
+### Get Diagnostics for Specific Vehicle
+GET {{baseUrl}}/api/v1/diagnostics/VEH-002?limit=20
+
+### ========================
+### Performance Testing
+### ========================
+
+### Query with timing (check response meta.query_ms)
+GET {{baseUrl}}/api/v1/telemetry?limit=1000
+
+### Stress Test - Large Batch Insert
+# @name largeBatch
+POST {{baseUrl}}/api/v1/telemetry/batch
+Content-Type: application/json
+
+< ./data/sample_batch.json

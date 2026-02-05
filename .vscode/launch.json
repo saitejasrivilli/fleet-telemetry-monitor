@@ -1,0 +1,101 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Go: Launch Server",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd",
+            "args": ["server", "--port", "8080"],
+            "env": {
+                "DB_PATH": "${workspaceFolder}/fleet_telemetry.db"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Go: Generate Data",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd",
+            "args": ["generate", "-c", "10000", "-n", "10"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Go: Query Data",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd",
+            "args": ["query", "--limit", "50"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Go: Run Tests",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${workspaceFolder}/...",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "C++: Debug Parser",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/cpp-parser/fleet_parser",
+            "args": ["-s", "${workspaceFolder}/data/sample_telemetry.csv"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build C++ Parser"
+        },
+        {
+            "name": "C++: Benchmark Parser",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/cpp-parser/fleet_parser",
+            "args": ["-B", "5", "${workspaceFolder}/data/sample_telemetry.csv"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "preLaunchTask": "Build C++ Parser"
+        },
+        {
+            "name": "Python: Generate Data",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/generate_data.py",
+            "args": ["-n", "10000", "-v", "10", "-f", "csv", "-o", "data/test"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Docker: Attach to Server",
+            "type": "go",
+            "request": "attach",
+            "mode": "remote",
+            "remotePath": "/app",
+            "port": 2345,
+            "host": "127.0.0.1"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Stack: Server + Generate Data",
+            "configurations": ["Go: Generate Data", "Go: Launch Server"],
+            "stopAll": true
+        }
+    ]
+}

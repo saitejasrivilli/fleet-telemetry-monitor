@@ -1,0 +1,21 @@
+{
+    "recommendations": [
+        "golang.go",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-python.python",
+        "ms-python.debugpy",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-sqlite",
+        "humao.rest-client",
+        "ms-azuretools.vscode-docker",
+        "github.vscode-github-actions",
+        "eamodio.gitlens",
+        "streetsidesoftware.code-spell-checker",
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode",
+        "ms-vscode.makefile-tools",
+        "tamasfe.even-better-toml"
+    ],
+    "unwantedRecommendations": []
+}
