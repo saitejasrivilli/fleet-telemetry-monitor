@@ -73,6 +73,8 @@ func serverCmd() *cobra.Command {
 			fmt.Printf("🚀 Fleet Telemetry Monitor API Server\n")
 			fmt.Printf("   Listening on http://localhost%s\n", addr)
 			fmt.Printf("   Database: %s\n\n", dbPath)
+			// Serve web dashboard at root
+			server.Router().PathPrefix("/").Handler(http.FileServer(http.Dir("./web/")))
 			fmt.Println("Available endpoints:")
 			fmt.Println("  GET  /health")
 			fmt.Println("  GET  /api/v1/vehicles")

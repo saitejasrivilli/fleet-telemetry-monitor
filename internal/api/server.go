@@ -57,6 +57,8 @@ func (s *Server) setupRoutes() {
 	// Add middleware
 	s.router.Use(loggingMiddleware)
 	s.router.Use(jsonMiddleware)
+	// Serve static dashboard
+	s.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./web/")))
 }
 
 // Router returns the configured router
