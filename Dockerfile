@@ -6,16 +6,14 @@ WORKDIR /build
 # Install build dependencies
 RUN apk add --no-cache gcc musl-dev sqlite-dev
 
-# Copy go mod files
+# Copy ALL source files first
 COPY go.mod ./
-
-# Download and verify dependencies
-RUN go mod download
-RUN go mod tidy
-
-# Copy source code
 COPY cmd/ ./cmd/
 COPY internal/ ./internal/
+
+# Download dependencies (this will read imports from source)
+RUN go mod tidy
+RUN go mod download
 
 # Build with CGO for SQLite support
 ENV CGO_ENABLED=1
