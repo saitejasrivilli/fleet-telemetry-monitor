@@ -27,14 +27,15 @@ FROM alpine:3.19
 
 WORKDIR /app
 
-RUN apk add --no-cache sqlite-libs libstdc++ curl
+RUN apk add --no-cache sqlite-libs libstdc++ curl python3
 
 COPY --from=go-builder /build/fleet-monitor /app/
 COPY --from=cpp-builder /build/cpp-parser/fleet_parser /app/
 COPY data/ /app/data/
 COPY web/ /app/web/
+COPY scripts/ /app/scripts/
 
-RUN mkdir -p /app/data
+RUN mkdir -p /app/data && chmod +x /app/scripts/*.py
 
 EXPOSE 8080
 
