@@ -1,25 +1,18 @@
-# Build Go application
 FROM golang:1.21-alpine AS go-builder
 
 WORKDIR /build
 
-# Install build dependencies
 RUN apk add --no-cache gcc musl-dev sqlite-dev
 
-# Copy ALL source files first
 COPY go.mod ./
 COPY cmd/ ./cmd/
 COPY internal/ ./internal/
 
-# Download dependencies (this will read imports from source)
-RUN go mod tidy
-RUN go mod download
+RUN go mod tidy && go mod download
 
-# Build with CGO for SQLite support
 ENV CGO_ENABLED=1
 RUN go build -ldflags="-s -w" -o fleet-monitor ./cmd/
 
-# Build C++ parser
 FROM alpine:3.19 AS cpp-builder
 
 WORKDIR /build
@@ -30,7 +23,6 @@ COPY cpp-parser/ ./cpp-parser/
 
 RUN cd cpp-parser && make
 
-# Final runtime image
 FROM alpine:3.19
 
 WORKDIR /app
