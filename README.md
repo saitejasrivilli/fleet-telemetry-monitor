@@ -286,8 +286,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## 👤 Author
 
 **Your Name**
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/YOUR_LINKEDIN)
+- GitHub: [@saitejasrivilli](https://github.com/saitejasrivilli)
+- LinkedIn: [saiteja-srivillibhutturu](https://www.linkedin.com/in/saitejasrivillibhutturu/)
 
 ---
 
